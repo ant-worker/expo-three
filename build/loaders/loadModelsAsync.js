@@ -79,8 +79,15 @@ async function loadFileContentsAsync(loader, uri, funcName) {
     }
 }
 export async function loadArrayBufferAsync({ uri, onProgress }) {
-    const loader = new FileLoader();
-    loader.setResponseType('arraybuffer');
-    return new Promise((res, rej) => loader.load(uri, res, onProgress, rej));
+    // const loader = new FileLoader();
+    // loader.setResponseType('arraybuffer');
+    // return new Promise((res, rej) => loader.load(uri, res, onProgress, rej));
+    try {
+        const fileContents = await readAsStringAsync(uri);
+        return fileContents;
+    }
+    catch ({ message }) {
+        throw new Error(`ExpoTHREE.loadArrayBufferAsync: Expo.FileSystem Failed to read uri: ${uri}. ${message}`);
+    }
 }
 //# sourceMappingURL=loadModelsAsync.js.map
