@@ -120,7 +120,14 @@ async function loadFileContentsAsync(loader, uri, funcName): Promise<any> {
 }
 
 export async function loadArrayBufferAsync({ uri, onProgress }): Promise<any> {
-  const loader = new FileLoader();
-  loader.setResponseType('arraybuffer');
-  return new Promise((res, rej) => loader.load(uri, res, onProgress, rej));
+  // const loader = new FileLoader();
+  // loader.setResponseType('arraybuffer');
+  // return new Promise((res, rej) => loader.load(uri, res, onProgress, rej));
+  try {
+      const fileContents = await readAsStringAsync(uri);
+      return fileContents;
+  }
+  catch ({ message }) {
+      throw new Error(`ExpoTHREE.loadArrayBufferAsync: Expo.FileSystem Failed to read uri: ${uri}. ${message}`);
+  }
 }
